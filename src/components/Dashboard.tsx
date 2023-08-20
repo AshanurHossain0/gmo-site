@@ -4,17 +4,18 @@ import { useNavigate } from 'react-router-dom';
 import { MyContext } from '../UserProvider';
 
 import Table from './Table';
-import { FetchData } from '../model';
+import Checkdata from './Checkdata';
+import { FetchDataModel } from '../model';
 
 interface UserDataResponse {
-  data: FetchData[];
+  data: FetchDataModel[];
 }
 
 const Dashboard: React.FC = () => {
   const { setOpen } = useContext(MyContext);
   const navigate = useNavigate();
 
-  const [users, setUsers] = useState<FetchData[]>([]);
+  const [users, setUsers] = useState<FetchDataModel[]>([]);
 
   useEffect(() => {
     const userData: string | null = localStorage.getItem('userData');
@@ -26,7 +27,7 @@ const Dashboard: React.FC = () => {
 
     axios.get<UserDataResponse>('https://dummy-users.onrender.com/users')
       .then(response => {
-        const fetchedData: FetchData[] = response.data.data;
+        const fetchedData: FetchDataModel[] = response.data.data;
         setUsers(fetchedData);
         
       })
@@ -38,6 +39,7 @@ const Dashboard: React.FC = () => {
   return (
     <div>
       <Table users={users} />
+      <Checkdata />
     </div>
   )
 }
